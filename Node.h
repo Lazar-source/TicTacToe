@@ -29,7 +29,7 @@ class Node
 		void SetChildrenVector(std::vector<Node*> c);
 		void SetSorGeneralas();
 		void SetNextNode(Node * nn);
-		void SetLastNode();
+		void SetLastNode(bool vege);
 		bool GetLastNode();
 
 };

@@ -59,7 +59,14 @@ int  Node::GetPotentialChildren()
 }
 void Node::SetMatrix(char ** m)
 {
-	matrix = m;
+	for (int  i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			matrix[i][j] = m[i][j];
+		}
+	}
+	
 
 }
 void Node::PrintMatrix()
@@ -89,9 +96,9 @@ void Node::SetNextNode(Node * nn)
 {
 	nextnode = nn;
 }
-void Node::SetLastNode()
+void Node::SetLastNode(bool vege)
 {
-	lastnode = true;
+	lastnode = vege;
 }
 bool Node::GetLastNode()
 {
@@ -100,11 +107,19 @@ bool Node::GetLastNode()
 Node::Node(Node * p, char** m )
 {
 	Node::parent = p;
-	Node::matrix = m;
 	Node::potentialchildren = 0;
 	Node::db = 0;
 	Node::sorgeneralas = false;
+	Node:: matrix=new char*[3];
 	nextnode = nullptr;
 	lastnode = false;
+	for (int i = 0; i < 3; i++)
+	{
+		matrix[i] = new char[3];
+		for (int j = 0; j < 3; j++)
+		{
+			matrix[i][j] = m[i][j];
+		}
+	}
 	
 }
