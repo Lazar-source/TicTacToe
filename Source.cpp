@@ -4,11 +4,9 @@
 #include <iostream>
 #include <cstdio>
 #include <ctime>
-void Jatekeleje()
+#include <sstream>
+#include <string>
 
-{
-	std::cout << "Kérem adjon meg egy ";
-}
 bool MatrixVege(char ** matrix,char j)
 {
 
@@ -97,19 +95,35 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c)
 					childrenmatrix[i][j] = matrix[i][j];
 			}
 			//std::cout << &children<<"  Eredeti:" << std::endl;
-			PrintMatrix(childrenmatrix);
-			int valami = freesquares[i][0];
-			int valami1 = freesquares[i][1];
-			childrenmatrix[freesquares[i][0]][freesquares[i][1]] = 'X';
-			//std::cout << &children << "  X bejelölve" << std::endl;
-			PrintMatrix(childrenmatrix);
-			children->SetMatrix(childrenmatrix);
-			bool vege = MatrixVege(childrenmatrix, 'X');
-			if (vege)
+			//PrintMatrix(childrenmatrix);
+			//int valami = freesquares[i][0];
+			//int valami1 = freesquares[i][1];
+			if (index % 2 == 0)
+			{
+				childrenmatrix[freesquares[i][0]][freesquares[i][1]] = 'O';
+				bool vege = MatrixVege(childrenmatrix, 'O');
+				if (vege)
 				{
 					children->SetLastNode(vege);
 					//std::cout << "Vége" << std::endl;
 				}
+			}
+			else
+			{
+				childrenmatrix[freesquares[i][0]][freesquares[i][1]] = 'X';
+				bool vege = MatrixVege(childrenmatrix, 'O');
+				if (vege)
+				{
+					children->SetLastNode(vege);
+					//std::cout << "Vége" << std::endl;
+				}
+			}
+			
+			//std::cout << &children << "  X bejelölve" << std::endl;
+			//PrintMatrix(childrenmatrix);
+			children->SetMatrix(childrenmatrix);
+			
+			
 			childrens.push_back(children);
 			c.push_back(children);
 			node->PushBackChildren(children);
@@ -137,8 +151,44 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c)
 
 	}
 }
+void Jatekeleje(char ** matrix)
+
+{
+	int X = 4;
+	int Y = 4;
+	std::string input = "";
+	while (X > 3 || X < 1)
+	{
+		PrintMatrix(matrix);
+		std::cout << "Kérem adjon meg egy vízszintes koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
+		std::cin >> input;
+		std::stringstream myStream(input);
+		if (myStream >> X);
+		system("cls");
+
+	}
+	while (Y > 3 || Y < 1)
+	{
+		std::cout << "Vízszintes: " << X << std::endl;;
+		PrintMatrix(matrix);
+		std::cout << "Kérem adjon meg egy függõleges koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
+		std::cin >> input;
+		std::stringstream myStream(input);
+		if (myStream >> Y);
+		system("cls");
+
+	}
+	matrix[(Y-1)][(X-1)] = 'X';
+	if (matrix[1][1] != 'X')
+	{
+		matrix[1][1] = 'O';
+	}
+
+}
 int main()
 {
+	setlocale(LC_ALL, "");
+	int db = 0;
 	std::vector<Node*> children;
 	char** matrix = new char*[3];
 	for (int i = 0; i < 3; i++)
@@ -147,8 +197,9 @@ int main()
 		for (int j = 0; j < 3; j++)
 			matrix[i][j] = ' ';
 	}
-	matrix[0][0] = 'X';
-	matrix[1][1] = 'O';
+	Jatekeleje(matrix);
+	//matrix[0][0] = 'X';
+	//matrix[1][1] = 'O';
 	Node  *root= new Node(NULL, matrix);
 	//children.push_back(root);
 	root->SetPotentialchildren();
@@ -167,9 +218,11 @@ int main()
 		children.erase(children.begin());
 		//std::cout << "Elem" << *children.begin() << std::endl;
 		//std::cout << "Egy sor legenerálva" << std::endl;
+		db++;
 	}
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	std::cout << "printf: " << duration << '\n'; 
+	std::cout << "db:" << db << std::endl;
 	/*std::clock_t start;
 	double duration;
 

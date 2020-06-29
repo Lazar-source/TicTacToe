@@ -104,6 +104,22 @@ bool Node::GetLastNode()
 {
 	return lastnode;
 }
+void Node::SetLastNodeValue(char c)
+{
+	if (c == 'X')
+	{
+		lastnodevalue = -1;
+	}
+	else if (c == 'O')
+	{
+		lastnodevalue = 2;
+	}
+	else if (c == 'D')
+	{
+		lastnodevalue = 1;
+	}
+
+}
 Node::Node(Node * p, char** m )
 {
 	Node::parent = p;

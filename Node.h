@@ -14,6 +14,7 @@ class Node
 		bool sorgeneralas;
 		Node* nextnode;
 		bool lastnode;
+		int lastnodevalue;
 	
 
 	public:
@@ -31,6 +32,7 @@ class Node
 		void SetNextNode(Node * nn);
 		void SetLastNode(bool vege);
 		bool GetLastNode();
+		void SetLastNodeValue(char c);
 
 };
 
