@@ -4,6 +4,11 @@
 #include <iostream>
 #include <cstdio>
 #include <ctime>
+void Jatekeleje()
+
+{
+	std::cout << "Kérem adjon meg egy ";
+}
 bool MatrixVege(char ** matrix,char j)
 {
 
@@ -30,11 +35,17 @@ bool MatrixVege(char ** matrix,char j)
 }
 void PrintMatrix(char ** matrix)
 {
+	std::cout << "   1  2  3" << std::endl;
 	for (int i = 0; i < 3; i++)
 	{
+		std::cout << (i+1) << " ";
 		for (int j = 0; j < 3; j++)
 		{
-			std::cout << " " << matrix[i][j] << " ";
+			if (matrix[i][j] == 'X' || matrix[i][j] == 'O')
+				std::cout << " " << matrix[i][j] << " ";
+			else
+				std::cout << " - ";
+
 		}
 		std::cout << "\n";
 	}
@@ -85,30 +96,30 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c)
 				for (int j = 0; j < 3; j++)
 					childrenmatrix[i][j] = matrix[i][j];
 			}
-			std::cout << &children<<"  Eredeti:" << std::endl;
+			//std::cout << &children<<"  Eredeti:" << std::endl;
 			PrintMatrix(childrenmatrix);
 			int valami = freesquares[i][0];
 			int valami1 = freesquares[i][1];
 			childrenmatrix[freesquares[i][0]][freesquares[i][1]] = 'X';
-			std::cout << &children << "  X bejelölve" << std::endl;
-		//	PrintMatrix(childrenmatrix);
+			//std::cout << &children << "  X bejelölve" << std::endl;
+			PrintMatrix(childrenmatrix);
 			children->SetMatrix(childrenmatrix);
 			bool vege = MatrixVege(childrenmatrix, 'X');
 			if (vege)
 				{
 					children->SetLastNode(vege);
-					std::cout << "Vége" << std::endl;
+					//std::cout << "Vége" << std::endl;
 				}
 			childrens.push_back(children);
 			c.push_back(children);
 			node->PushBackChildren(children);
 			if (i == 0)
 				it = childrens.begin();
-			std::cout << std::endl;
-			std::cout << "         Children belerakva, mátrix kiiratás" << std::endl;
-			children->PrintMatrix();
+			//std::cout << std::endl;
+			//std::cout << "         Children belerakva, mátrix kiiratás" << std::endl;
+			//children->PrintMatrix();
 			childrenmatrix[freesquares[i][0]][freesquares[i][1]] = ' ';
-			std::cout << std::endl;
+			//std::cout << std::endl;
 	//		children->PrintMatrix();
 
 
@@ -136,7 +147,8 @@ int main()
 		for (int j = 0; j < 3; j++)
 			matrix[i][j] = ' ';
 	}
-	
+	matrix[0][0] = 'X';
+	matrix[1][1] = 'O';
 	Node  *root= new Node(NULL, matrix);
 	//children.push_back(root);
 	root->SetPotentialchildren();
