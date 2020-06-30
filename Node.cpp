@@ -118,7 +118,20 @@ void Node::SetLastNodeValue(char c)
 	{
 		lastnodevalue = 1;
 	}
+	nodevalue = lastnodevalue;
 
+}
+Node * Node::GetParent()
+{
+	return parent;
+}
+int *Node::GetNodeValue()
+{
+	return &nodevalue;
+}
+int * Node::GetTreeSize()
+{
+	return &subtreesize;
 }
 Node::Node(Node * p, char** m )
 {
@@ -137,5 +150,7 @@ Node::Node(Node * p, char** m )
 			matrix[i][j] = m[i][j];
 		}
 	}
+	subtreesize = 0;
 	
 }
+

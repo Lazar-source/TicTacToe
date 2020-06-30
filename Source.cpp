@@ -48,7 +48,7 @@ void PrintMatrix(char ** matrix)
 		std::cout << "\n";
 	}
 }
-void  SorGeneralas(Node * node,std::vector<Node* > &c)
+void  SorGeneralas(Node * node,std::vector<Node* > &c, std::vector <Node*> &a)
 {
 	bool lastnode = node->GetLastNode();
 	if (lastnode == false)
@@ -73,7 +73,11 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c)
 				}
 			}
 		}
-
+		if (index == 0)
+		{
+			node->SetLastNode(true);
+			node->SetLastNodeValue('D');
+		}
 		for (int i = 0; i < index; i++)
 		{
 			/*for (int j  = 0; j < 9; j++)
@@ -105,16 +109,18 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c)
 				if (vege)
 				{
 					children->SetLastNode(vege);
+					children->SetLastNodeValue('O');
 					//std::cout << "Vége" << std::endl;
 				}
 			}
 			else
 			{
 				childrenmatrix[freesquares[i][0]][freesquares[i][1]] = 'X';
-				bool vege = MatrixVege(childrenmatrix, 'O');
+				bool vege = MatrixVege(childrenmatrix, 'X');
 				if (vege)
 				{
 					children->SetLastNode(vege);
+					children->SetLastNodeValue('X');
 					//std::cout << "Vége" << std::endl;
 				}
 			}
@@ -126,6 +132,7 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c)
 			
 			childrens.push_back(children);
 			c.push_back(children);
+			a.push_back(children);
 			node->PushBackChildren(children);
 			if (i == 0)
 				it = childrens.begin();
@@ -185,11 +192,13 @@ void Jatekeleje(char ** matrix)
 	}
 
 }
+
 int main()
 {
 	setlocale(LC_ALL, "");
 	int db = 0;
 	std::vector<Node*> children;
+	std::vector<Node*> allnode;
 	char** matrix = new char*[3];
 	for (int i = 0; i < 3; i++)
 	{
@@ -206,14 +215,14 @@ int main()
 	root->Generatechildren( root);
 	root->PrintMatrix();
 	std::cout << std::endl;
-	SorGeneralas(root,children);
+	SorGeneralas(root,children,allnode);
 	std::cout << std::endl;
 	std::clock_t start;
 	double duration;
 	start = std::clock();
 	while (children.size()!=0)
 	{
-		SorGeneralas(*children.begin(), children);
+		SorGeneralas(*children.begin(), children,allnode);
 	//	std::cout << "Elem" <<*children.begin()<< std::endl;
 		children.erase(children.begin());
 		//std::cout << "Elem" << *children.begin() << std::endl;
@@ -223,6 +232,19 @@ int main()
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	std::cout << "printf: " << duration << '\n'; 
 	std::cout << "db:" << db << std::endl;
+	for (std::vector <Node*> ::reverse_iterator it = allnode.rbegin(); it != allnode.rend(); it++) {
+		Node * parent = (*it)->GetParent();
+		int * value = (*it)->GetNodeValue();
+		int * parentvalue = parent->GetNodeValue();
+		//std::cout << "value: " << *value << std::endl;
+		//std::cout << "parentvalue: " << *parentvalue << std::endl;
+		*parentvalue = *value + *parentvalue;
+		std::cout << "parentvalue: " << *parentvalue << std::endl;
+		//int * subtree = (*it)->GetTreeSize();
+		//int * parentsubtree = parent->GetTreeSize();
+		//*parentsubtree = *subtree + *parentsubtree + 1;
+		//std::cout << "parentsubtree: " << *parentsubtree << std::endl;
+	}
 	/*std::clock_t start;
 	double duration;
 

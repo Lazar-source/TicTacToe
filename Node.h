@@ -15,6 +15,8 @@ class Node
 		Node* nextnode;
 		bool lastnode;
 		int lastnodevalue;
+		int nodevalue;
+		int subtreesize;
 	
 
 	public:
@@ -33,6 +35,10 @@ class Node
 		void SetLastNode(bool vege);
 		bool GetLastNode();
 		void SetLastNodeValue(char c);
+		Node * GetParent();
+		int* GetNodeValue();
+		int * GetTreeSize();
+
 
 };
 
