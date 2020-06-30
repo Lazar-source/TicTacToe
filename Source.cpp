@@ -192,10 +192,20 @@ void Jatekeleje(char ** matrix)
 	}
 
 }
+bool SameMatrix(char**matrix, Node * node)
+{
+	char ** m = node->GetMatrix();
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
+			if (matrix[i][j] != m[i][j])
+				return false;
+	return true;
+}
 
 int main()
 {
 	setlocale(LC_ALL, "");
+	bool vege = false;
 	int db = 0;
 	std::vector<Node*> children;
 	std::vector<Node*> allnode;
@@ -244,6 +254,65 @@ int main()
 		//int * parentsubtree = parent->GetTreeSize();
 		//*parentsubtree = *subtree + *parentsubtree + 1;
 		//std::cout << "parentsubtree: " << *parentsubtree << std::endl;
+	}
+	char** actualmatrix = new char*[3];
+	for (int i = 0; i < 3; i++)
+	{
+		actualmatrix[i] = new char[3];
+		for (int j = 0; j < 3; j++)
+			actualmatrix[i][j] = matrix[i][j];
+	}
+	Node * actualnode;
+	actualnode->SetMatrix(actualmatrix);
+	system("cls");
+	while (!vege)
+	{
+		
+		
+		int X = 4;
+		int Y = 4;
+		std::string input = "";
+		bool same = false;
+		bool goodcoordinates = false;
+		PrintMatrix(actualmatrix);
+		while (!goodcoordinates)
+		{
+			while (X > 3 || X < 1)
+			{
+				PrintMatrix(actualmatrix);
+				std::cout << "Kérem adjon meg egy vízszintes koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
+				std::cin >> input;
+				std::stringstream myStream(input);
+				if (myStream >> X);
+				system("cls");
+
+			}
+			while (Y > 3 || Y < 1)
+			{
+				std::cout << "Vízszintes: " << X << std::endl;;
+				PrintMatrix(actualmatrix);
+				std::cout << "Kérem adjon meg egy függõleges koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
+				std::cin >> input;
+				std::stringstream myStream(input);
+				if (myStream >> Y);
+				system("cls");
+
+			}
+			if (actualmatrix[Y - 1][X - 1] != 'X'&&actualmatrix[Y - 1][X - 1] != 'O')
+			{
+				goodcoordinates = true;
+			}
+		}
+		
+		for (std::vector <Node*> ::reverse_iterator it = allnode.rbegin(); it != allnode.rend(); it++) {
+			same = SameMatrix(actualmatrix, (*it));
+			if (same)
+			{
+				actualnode = (*it);
+				break;
+			}
+		}
+
 	}
 	/*std::clock_t start;
 	double duration;
