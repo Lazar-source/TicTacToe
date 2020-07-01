@@ -133,6 +133,15 @@ int * Node::GetTreeSize()
 {
 	return &subtreesize;
 }
+Node * Node::GetMuchValueChild()
+{
+	
+	for(std::vector <Node*> ::iterator it = children.begin(); it != children.end(); it++)
+	{
+
+	}
+	return nullptr;
+}
 Node::Node(Node * p, char** m )
 {
 	Node::parent = p;

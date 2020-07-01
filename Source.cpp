@@ -255,15 +255,25 @@ int main()
 		//*parentsubtree = *subtree + *parentsubtree + 1;
 		//std::cout << "parentsubtree: " << *parentsubtree << std::endl;
 	}
+	int index = 0;
+	
 	char** actualmatrix = new char*[3];
 	for (int i = 0; i < 3; i++)
 	{
 		actualmatrix[i] = new char[3];
 		for (int j = 0; j < 3; j++)
+		{
 			actualmatrix[i][j] = matrix[i][j];
+			if (actualmatrix[i][j] == ' ')
+			{
+				index++;
+			}
+		}
 	}
-	Node * actualnode;
-	actualnode->SetMatrix(actualmatrix);
+	Node * actualnode=root;
+	bool same = false;
+	
+
 	system("cls");
 	while (!vege)
 	{
@@ -272,7 +282,7 @@ int main()
 		int X = 4;
 		int Y = 4;
 		std::string input = "";
-		bool same = false;
+		same = false;
 		bool goodcoordinates = false;
 		PrintMatrix(actualmatrix);
 		while (!goodcoordinates)
@@ -301,9 +311,25 @@ int main()
 			if (actualmatrix[Y - 1][X - 1] != 'X'&&actualmatrix[Y - 1][X - 1] != 'O')
 			{
 				goodcoordinates = true;
+				if (index % 2 == 0)
+				{
+					actualmatrix[Y - 1][X - 1] != 'O';
+					index--;
+				}
+				else
+				{
+					actualmatrix[Y - 1][X - 1] != 'O';
+					index--;
+				}
+
+			}
+			else
+			{
+				std::cout << "Rossz koordinátákat adott meg!" << std::endl;
 			}
 		}
 		
+
 		for (std::vector <Node*> ::reverse_iterator it = allnode.rbegin(); it != allnode.rend(); it++) {
 			same = SameMatrix(actualmatrix, (*it));
 			if (same)
@@ -312,6 +338,7 @@ int main()
 				break;
 			}
 		}
+
 
 	}
 	/*std::clock_t start;

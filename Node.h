@@ -38,6 +38,7 @@ class Node
 		Node * GetParent();
 		int* GetNodeValue();
 		int * GetTreeSize();
+		Node* GetMuchValueChild();
 
 
 };
