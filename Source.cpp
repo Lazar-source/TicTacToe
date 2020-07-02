@@ -328,16 +328,50 @@ int main()
 				std::cout << "Rossz koordinátákat adott meg!" << std::endl;
 			}
 		}
+		bool goodchild = false;
 		
+		
+			for (std::vector <Node*> ::reverse_iterator it = allnode.rbegin(); it != allnode.rend(); it++) {
+				same = SameMatrix(actualmatrix, (*it));
+				if (same)
+				{
+					actualnode = (*it);
+					break;
+				}
 
-		for (std::vector <Node*> ::reverse_iterator it = allnode.rbegin(); it != allnode.rend(); it++) {
-			same = SameMatrix(actualmatrix, (*it));
-			if (same)
-			{
-				actualnode = (*it);
-				break;
 			}
-		}
+			while (goodchild)
+			{
+				bool win = false;
+				std::vector <Node*> childrens=actualnode->GetVect();
+				for (std::vector <Node*> ::iterator it = childrens.begin(); it != childrens.end(); it++) {
+					if ((*it)->GetLastNodeValue() == 2)
+					{
+						actualnode = (*it);
+						win = true;
+						break;
+					}
+					else if ((*it)->GetLastNodeValue() == 1)
+					{
+						actualnode = (*it);
+						win = true;
+						break;
+					}
+
+				}
+				if (!win)
+				{
+					while(!goodchild)
+						{
+						Node * nextturn = actualnode->GetMuchValueChild();
+						std::vector <Node*> nextchild = nextturn->GetVect();
+						for (std::vector <Node*> ::iterator it = nextchild.begin(); it != nextchild.end(); it++) {
+						}
+						}
+				}
+			
+
+			}
 
 
 	}

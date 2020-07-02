@@ -30,24 +30,7 @@ void Node::Generatechildren(Node * par)
 	}
 
 }
-Node * Node::GetChildren()
-{
-	
-	if (db!=potentialchildren)
-	{
-		it++;
-		db++;
-		return (*it);
-	}
-	else
-	{
-		return nullptr;
-	}
-	
-	
-		
 
-}
 char ** Node::GetMatrix()
 {
 	return matrix;
@@ -136,11 +119,28 @@ int * Node::GetTreeSize()
 Node * Node::GetMuchValueChild()
 {
 	
-	for(std::vector <Node*> ::iterator it = children.begin(); it != children.end(); it++)
+	Node * Child = *(children.begin());
+	for( it = children.begin(); it != children.end(); it++)
 	{
+		
+		if (((*it)->GetNodeValue()) > (Child->GetNodeValue()))
+		{
+			Child = (*it);
+		}
+		
+
 
 	}
-	return nullptr;
+	
+	return Child ;
+}
+std::vector<Node*> Node::GetVect()
+{
+	return children;
+}
+int Node::GetLastNodeValue()
+{
+	return lastnodevalue;
 }
 Node::Node(Node * p, char** m )
 {

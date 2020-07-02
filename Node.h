@@ -23,7 +23,6 @@ class Node
 		Node(Node * p, char ** m);
 		void SetPotentialchildren();
 		void Generatechildren(Node * par);
-		Node * GetChildren();
 		char** GetMatrix();
 		int GetPotentialChildren();
 		void SetMatrix(char ** m);
@@ -39,6 +38,8 @@ class Node
 		int* GetNodeValue();
 		int * GetTreeSize();
 		Node* GetMuchValueChild();
+		std::vector<Node*> GetVect();
+		int GetLastNodeValue();
 
 
 };
