@@ -277,8 +277,8 @@ int main()
 	system("cls");
 	while (!vege)
 	{
-		
-		
+
+
 		int X = 4;
 		int Y = 4;
 		std::string input = "";
@@ -328,53 +328,94 @@ int main()
 				std::cout << "Rossz koordinátákat adott meg!" << std::endl;
 			}
 		}
+		//valahova tesz az emberi játékos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		system("cls");
+		PrintMatrix(actualmatrix);
+
+
+
+
 		bool goodchild = false;
+
 		
+		for (std::vector <Node*> ::iterator it = allnode.begin(); it != allnode.end(); it++) {
+			same = SameMatrix(actualmatrix, (*it));
+			
+			if (same)
+			{
+				actualnode = (*it);
+				break;
+			}
+
+		}  
+		// megkeresi hova tett a játékos
+
+		bool win = false;
+		int torlendochildren = 0;
 		
-			for (std::vector <Node*> ::reverse_iterator it = allnode.rbegin(); it != allnode.rend(); it++) {
-				same = SameMatrix(actualmatrix, (*it));
-				if (same)
+		std::vector <Node*> actualnodechildrens = actualnode->GetVect();
+		
+		for (std::vector <Node*> ::iterator it = actualnodechildrens.begin(); it != actualnodechildrens.end(); it++) {
+		
+			torlendochildren++;
+			std::vector<Node*> nextnodechildrens = (*it)->GetVect();
+			if ((*it)->GetLastNodeValue() == 2)
+			{
+				actualnode = (*it);
+				
+				
+				vege = true;
+				break;
+			}
+			else if ((*it)->GetLastNodeValue() == 1)
+			{
+				actualnode = (*it);
+				
+				
+				vege = true;
+				break;
+			}
+			for (std::vector <Node*> ::iterator itt = nextnodechildrens.begin(); it != nextnodechildrens.end(); it++) {
+				
+				if ((*itt)->GetLastNodeValue() == -1)
 				{
-					actualnode = (*it);
+					actualnodechildrens.erase(actualnodechildrens.begin() + torlendochildren);
 					break;
 				}
-
 			}
-			while (goodchild)
-			{
-				bool win = false;
-				std::vector <Node*> childrens=actualnode->GetVect();
-				for (std::vector <Node*> ::iterator it = childrens.begin(); it != childrens.end(); it++) {
-					if ((*it)->GetLastNodeValue() == 2)
-					{
-						actualnode = (*it);
-						win = true;
-						break;
-					}
-					else if ((*it)->GetLastNodeValue() == 1)
-					{
-						actualnode = (*it);
-						win = true;
-						break;
-					}
+			
+			
+		}
+			
+				
 
-				}
-				if (!win)
-				{
-					while(!goodchild)
-						{
-						Node * nextturn = actualnode->GetMuchValueChild();
-						std::vector <Node*> nextchild = nextturn->GetVect();
-						for (std::vector <Node*> ::iterator it = nextchild.begin(); it != nextchild.end(); it++) {
-						}
-						}
-				}
+
+
+			
+		
+	}
+				
+				
 			
 
-			}
+			
 
 
-	}
+	
 	/*std::clock_t start;
 	double duration;
 
