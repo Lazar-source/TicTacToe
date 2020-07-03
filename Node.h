@@ -37,7 +37,6 @@ class Node
 		Node * GetParent();
 		int* GetNodeValue();
 		int * GetTreeSize();
-		Node* GetMuchValueChild();
 		std::vector<Node*> GetVect();
 		int GetLastNodeValue();
 

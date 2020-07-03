@@ -116,24 +116,7 @@ int * Node::GetTreeSize()
 {
 	return &subtreesize;
 }
-Node * Node::GetMuchValueChild()
-{
-	
-	Node * Child = *(children.begin());
-	for( it = children.begin(); it != children.end(); it++)
-	{
-		
-		if (((*it)->GetNodeValue()) > (Child->GetNodeValue()))
-		{
-			Child = (*it);
-		}
-		
 
-
-	}
-	
-	return Child ;
-}
 std::vector<Node*> Node::GetVect()
 {
 	return children;
