@@ -17,6 +17,7 @@ class Node
 		int lastnodevalue;
 		int nodevalue;
 		int subtreesize;
+		bool closednode;
 	
 
 	public:
@@ -39,6 +40,8 @@ class Node
 		int * GetTreeSize();
 		std::vector<Node*> GetVect();
 		int GetLastNodeValue();
+		void SetClosedNode();
+		bool GetClosedNode();
 
 
 };

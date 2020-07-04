@@ -256,13 +256,14 @@ int main()
 		Node * parent = (*it)->GetParent();
 		int * value = (*it)->GetNodeValue();
 		int * parentvalue = parent->GetNodeValue();
+		//std::cout << "\n";
 		//std::cout << "value: " << *value << std::endl;
 		//std::cout << "parentvalue: " << *parentvalue << std::endl;
 		*parentvalue = *value + *parentvalue;
 		//std::cout << "parentvalue: " << *parentvalue << std::endl;
-		//int * subtree = (*it)->GetTreeSize();
-		//int * parentsubtree = parent->GetTreeSize();
-		//*parentsubtree = *subtree + *parentsubtree + 1;
+		int * subtree = (*it)->GetTreeSize();
+		int * parentsubtree = parent->GetTreeSize();
+		*parentsubtree = *subtree + *parentsubtree + 1;
 		//std::cout << "parentsubtree: " << *parentsubtree << std::endl;
 	}
 	int index = 0;
@@ -280,8 +281,7 @@ int main()
 			}
 		}
 	}
-	Node * actualnode=new Node(NULL,actualmatrix);
-	bool same = false;
+	Node * actualnode = root;
 	
 
 	system("cls");
@@ -292,7 +292,7 @@ int main()
 		int X = 4;
 		int Y = 4;
 		std::string input = "";
-		same = false;
+		bool same = false;
 		bool goodcoordinates = false;
 		//PrintMatrix(actualmatrix);
 		actualnode->PrintMatrix();
@@ -318,22 +318,16 @@ int main()
 				std::cin >> input;
 				std::stringstream myStream(input);
 				if (myStream >> Y);
-				system("cls");
+				//system("cls");
 
 			}
 			if (actualmatrix[Y - 1][X - 1] != 'X'&&actualmatrix[Y - 1][X - 1] != 'O')
 			{
 				goodcoordinates = true;
-				if (index % 2 == 0)
-				{
-					index--;
-					actualmatrix[Y - 1][X - 1] = 'O';
-				}
-				else
-				{
-					index--;
-					actualmatrix[Y - 1][X - 1] = 'X';
-				}
+				actualmatrix[Y - 1][X - 1] = 'X';
+				
+					
+				
 
 			}
 			else
@@ -345,7 +339,7 @@ int main()
 
 
 
-		system("cls");
+		//system("cls");
 		PrintMatrix(actualmatrix);
 
 
@@ -353,45 +347,42 @@ int main()
 
 		bool goodchild = false;
 
-		
-		for (std::vector <Node*> ::iterator it = allnode.begin(); it != allnode.end(); it++) {
+		std::vector<Node*> actualnodechildrens = actualnode->GetVect();
+		for (std::vector <Node*> ::iterator it = actualnodechildrens.begin(); it != actualnodechildrens.end(); it++) {
 			Node * temporarynode = (*it);
 			same = SameMatrix(actualmatrix, temporarynode);
 			
 			if (same)
 			{
 				actualnode = (*it);
+				//allnode.erase(allnode.begin(), allnode.begin() + (elem - 1));
 				break;
 			}
 
 		}  
 		std::cout << std::endl << "Valami" << std::endl;
 		actualnode->PrintMatrix();
+		PrintMatrix(actualmatrix);
 		// megkeresi hova tett a játékos
 
 		bool win = false;
 		int torlendochildren = 0;
 		int elemszam = 0;;
-		std::vector <Node*> actualnodechildrens = actualnode->GetVect();
+		 actualnodechildrens = actualnode->GetVect();
 		
 		for (std::vector <Node*> ::iterator it = actualnodechildrens.begin(); it != actualnodechildrens.end(); ++it) {
-		
 			elemszam++;
 			Node* nextnode = (*it);
 			std::vector<Node*> nextnodechildrens = nextnode->GetVect();
 			if ((*it)->GetLastNodeValue() == 2)
 			{
 				actualnode = (*it);
-				
-				
 				vege = true;
 				break;
 			}
 			else if ((*it)->GetLastNodeValue() == 1)
 			{
 				actualnode = (*it);
-				
-				
 				vege = true;
 				break;
 			}
@@ -401,7 +392,7 @@ int main()
 
 					if ((*itt)->GetLastNodeValue() == -1)
 					{
-						actualnodechildrens.erase(actualnodechildrens.begin() + torlendochildren);
+						(*it)->SetClosedNode();
 						break;
 					}
 				}
@@ -412,18 +403,57 @@ int main()
 
 		
 			
-
+				actualnode->PrintMatrix();
 				actualnode = *(actualnodechildrens.begin());
-				
-				for (std::vector <Node*> ::iterator iter = actualnodechildrens.begin(); iter != actualnodechildrens.end(); iter++) {
-					if (((*iter)->GetNodeValue()) > (actualnode->GetNodeValue()))
+				actualnode->PrintMatrix();
+				char** m = actualnode->GetMatrix();
+				for (int i = 0; i < 3; i++)
+				{
+					for (int j = 0; j < 3; j++)
 					{
-						actualnode = (*iter);
+						actualmatrix[i][j] = m[i][j];
+
 					}
-	
-			
 				}
-		
+
+				if (!vege)
+				{
+					for (std::vector <Node*> ::iterator iter = actualnodechildrens.begin(); iter != actualnodechildrens.end(); iter++) {
+						std::cout << "Ezt nézd" << std::endl;
+						(*iter)->PrintMatrix();
+						//actualnode->PrintMatrix();
+						std::cout << *((*iter)->GetNodeValue()) << std::endl;
+						std::cout << *((*iter)->GetTreeSize()) << std::endl;
+						double iternodevalue = (double)*((*iter)->GetNodeValue()) / (double)*((*iter)->GetTreeSize());
+						//double actualnodevalue = actualnode->GetNodeValue() / actualnode->GetTreeSize();
+						std::cout << iternodevalue << std::endl;
+						//std::cout << actualnodevalue << std::endl;
+						if (true)
+
+						{
+
+
+							if ((*iter)->GetClosedNode() != true)
+							{
+								actualnode = (*iter);
+								char** m = actualnode->GetMatrix();
+								for (int i = 0; i < 3; i++)
+								{
+									for (int j = 0; j < 3; j++)
+									{
+										actualmatrix[i][j] = m[i][j];
+
+									}
+								}
+							}
+						}
+
+
+					}
+					std::cout << "Kiiratás" << std::endl;
+					actualnode->PrintMatrix();
+					PrintMatrix(actualmatrix);
+				}
 				
 
 

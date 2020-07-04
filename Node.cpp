@@ -54,11 +54,17 @@ void Node::SetMatrix(char ** m)
 }
 void Node::PrintMatrix()
 {
+	std::cout << "   1  2  3" << std::endl;
 	for (int i = 0; i < 3; i++)
 	{
+		std::cout << (i + 1) << " ";
 		for (int j = 0; j < 3; j++)
 		{
-			std::cout << " " << matrix[i][j] << " ";
+			if (matrix[i][j] == 'X' || matrix[i][j] == 'O')
+				std::cout << " " << matrix[i][j] << " ";
+			else
+				std::cout << " - ";
+
 		}
 		std::cout << "\n";
 	}
@@ -91,15 +97,15 @@ void Node::SetLastNodeValue(char c)
 {
 	if (c == 'X')
 	{
-		lastnodevalue = -1;
+		lastnodevalue = -3;
 	}
 	else if (c == 'O')
 	{
-		lastnodevalue = 2;
+		lastnodevalue = 3;
 	}
 	else if (c == 'D')
 	{
-		lastnodevalue = 1;
+		lastnodevalue = 2;
 	}
 	nodevalue = lastnodevalue;
 
@@ -124,6 +130,14 @@ std::vector<Node*> Node::GetVect()
 int Node::GetLastNodeValue()
 {
 	return lastnodevalue;
+}
+void Node::SetClosedNode()
+{
+	closednode = true;
+}
+bool Node::GetClosedNode()
+{
+	return closednode;
 }
 Node::Node(Node * p, char** m )
 {
