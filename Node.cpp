@@ -125,7 +125,11 @@ int * Node::GetTreeSize()
 
 std::vector<Node*> Node::GetVect()
 {
-	return children;
+	
+		return children;
+	
+
+	
 }
 int Node::GetLastNodeValue()
 {
@@ -138,6 +142,30 @@ void Node::SetClosedNode()
 bool Node::GetClosedNode()
 {
 	return closednode;
+}
+void Node::SetWinNode()
+{
+	winnode =  1;
+}
+void Node::SetDrawNode()
+{
+	drawnode = 1;
+}
+void Node::SetLostNode()
+{
+	lostnode = 1;
+}
+int * Node::GetWinNode()
+{
+	return &winnode;
+}
+int * Node::GetDrawNode()
+{
+	return &drawnode;
+}
+int * Node::GetLostNode()
+{
+	return &lostnode;
 }
 Node::Node(Node * p, char** m )
 {

@@ -18,6 +18,9 @@ class Node
 		int nodevalue;
 		int subtreesize;
 		bool closednode;
+		int winnode;
+		int drawnode;
+		int lostnode;
 	
 
 	public:
@@ -42,6 +45,12 @@ class Node
 		int GetLastNodeValue();
 		void SetClosedNode();
 		bool GetClosedNode();
+		void SetWinNode();
+		void SetDrawNode();
+		void SetLostNode();
+		int * GetWinNode();
+		int *GetDrawNode();
+		int * GetLostNode();
 
 
 };

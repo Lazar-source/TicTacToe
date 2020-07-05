@@ -77,6 +77,7 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c, std::vector <Node*> &a)
 		{
 			node->SetLastNode(true);
 			node->SetLastNodeValue('D');
+			node->SetDrawNode();
 		}
 		for (int i = 0; i < index; i++)
 		{
@@ -110,6 +111,8 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c, std::vector <Node*> &a)
 				{
 					children->SetLastNode(vege);
 					children->SetLastNodeValue('O');
+					children->SetWinNode();
+					
 					//std::cout << "Vége" << std::endl;
 				}
 			}
@@ -121,6 +124,8 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c, std::vector <Node*> &a)
 				{
 					children->SetLastNode(vege);
 					children->SetLastNodeValue('X');
+					children->SetLostNode();
+					
 					//std::cout << "Vége" << std::endl;
 				}
 			}
@@ -256,15 +261,48 @@ int main()
 		Node * parent = (*it)->GetParent();
 		int * value = (*it)->GetNodeValue();
 		int * parentvalue = parent->GetNodeValue();
+		int * winvalue = (*it)->GetWinNode();
+		int * drawvalue = (*it)->GetDrawNode();
+		int* lostvalue = (*it)->GetLostNode();
+		int * parentwinvalue = parent->GetWinNode();
+		int * parentdrawvalue = parent->GetDrawNode();
+		int* parentlostvalue = parent->GetLostNode();
 		//std::cout << "\n";
 		//std::cout << "value: " << *value << std::endl;
 		//std::cout << "parentvalue: " << *parentvalue << std::endl;
 		*parentvalue = *value + *parentvalue;
+		*parentwinvalue = *winvalue + *parentwinvalue;
+		*parentdrawvalue = *drawvalue + *parentdrawvalue;
+		*parentlostvalue = *lostvalue + *parentlostvalue;
+
 		//std::cout << "parentvalue: " << *parentvalue << std::endl;
 		int * subtree = (*it)->GetTreeSize();
 		int * parentsubtree = parent->GetTreeSize();
 		*parentsubtree = *subtree + *parentsubtree + 1;
 		//std::cout << "parentsubtree: " << *parentsubtree << std::endl;
+		if ((*it)->GetLastNodeValue() == -3)
+		{
+			
+			(*it)->SetClosedNode();
+			parent->SetClosedNode();
+			
+		}
+		//std::vector<Node*> nodes = (*it)->GetVect();
+		/*if (nodes.size() > 0)
+		{
+			for (std::vector <Node*> ::iterator itt = nodes.begin(); itt != nodes.end(); itt++)
+			{
+				if (((*itt)->GetClosedNode()) == true)
+				{
+					(*it)->SetClosedNode();
+					if (parent != NULL)
+					{
+						parent->SetClosedNode();
+					}
+					break;
+				}
+			}
+		}*/
 	}
 	int index = 0;
 	
@@ -285,6 +323,7 @@ int main()
 	
 
 	system("cls");
+	bool elso = true;
 	while (!vege)
 	{
 
@@ -296,45 +335,52 @@ int main()
 		bool goodcoordinates = false;
 		//PrintMatrix(actualmatrix);
 		actualnode->PrintMatrix();
-		while (!goodcoordinates)
+		if (index % 2 == 1)
 		{
-			while (X > 3 || X < 1)
+			while (!goodcoordinates)
 			{
-				//PrintMatrix(actualmatrix);
-				actualnode->PrintMatrix();
-				std::cout << "Kérem adjon meg egy vízszintes koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
-				std::cin >> input;
-				std::stringstream myStream(input);
-				if (myStream >> X);
-				system("cls");
+				X = 4;
+				Y = 4;
+				while (X > 3 || X < 1)
+				{
+					//PrintMatrix(actualmatrix);
+					actualnode->PrintMatrix();
+					std::cout << "Kérem adjon meg egy vízszintes koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
+					std::cin >> input;
+					std::stringstream myStream(input);
+					if (myStream >> X);
+					system("cls");
 
-			}
-			while (Y > 3 || Y < 1)
-			{
-				std::cout << "Vízszintes: " << X << std::endl;;
-				//PrintMatrix(actualmatrix);
-				actualnode->PrintMatrix();
-				std::cout << "Kérem adjon meg egy függõleges koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
-				std::cin >> input;
-				std::stringstream myStream(input);
-				if (myStream >> Y);
-				//system("cls");
+				}
+				while (Y > 3 || Y < 1)
+				{
+					std::cout << "Vízszintes: " << X << std::endl;;
+					//PrintMatrix(actualmatrix);
+					actualnode->PrintMatrix();
+					std::cout << "Kérem adjon meg egy függõleges koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
+					std::cin >> input;
+					std::stringstream myStream(input);
+					if (myStream >> Y);
+					//system("cls");
 
-			}
-			if (actualmatrix[Y - 1][X - 1] != 'X'&&actualmatrix[Y - 1][X - 1] != 'O')
-			{
-				goodcoordinates = true;
-				actualmatrix[Y - 1][X - 1] = 'X';
-				
-					
-				
+				}
+				if (actualmatrix[Y - 1][X - 1] != 'X'&&actualmatrix[Y - 1][X - 1] != 'O')
+				{
+					goodcoordinates = true;
+					actualmatrix[Y - 1][X - 1] = 'X';
 
+
+
+
+				}
+				else
+				{
+					std::cout << "Rossz koordinátákat adott meg!" << std::endl;
+				}
 			}
-			else
-			{
-				std::cout << "Rossz koordinátákat adott meg!" << std::endl;
-			}
+			index--;
 		}
+		
 		//valahova tesz az emberi játékos
 
 
@@ -369,92 +415,161 @@ int main()
 		int torlendochildren = 0;
 		int elemszam = 0;;
 		 actualnodechildrens = actualnode->GetVect();
-		
-		for (std::vector <Node*> ::iterator it = actualnodechildrens.begin(); it != actualnodechildrens.end(); ++it) {
-			elemszam++;
-			Node* nextnode = (*it);
-			std::vector<Node*> nextnodechildrens = nextnode->GetVect();
-			if ((*it)->GetLastNodeValue() == 2)
-			{
-				actualnode = (*it);
-				vege = true;
-				break;
-			}
-			else if ((*it)->GetLastNodeValue() == 1)
-			{
-				actualnode = (*it);
-				vege = true;
-				break;
-			}
-			if (nextnodechildrens.size() > 0)
-			{
-				for (std::vector <Node*> ::iterator itt = nextnodechildrens.begin(); itt != nextnodechildrens.end(); itt++) {
+		 if (actualnodechildrens.size() > 0)
+		 {
+			 for (std::vector <Node*> ::iterator it = actualnodechildrens.begin(); it != actualnodechildrens.end(); ++it) {
+				 elemszam++;
+				 Node* nextnode = (*it);
+				 std::vector<Node*> nextnodechildrens = nextnode->GetVect();
+				 if ((*it)->GetLastNodeValue() == 2)
+				 {
+					 actualnode = (*it);
+					 vege = true;
+					 break;
+				 }
+				 else if ((*it)->GetLastNodeValue() == 1)
+				 {
+					 actualnode = (*it);
+					 vege = true;
+					 break;
+				 }
+				 /*if (nextnodechildrens.size() > 0)
+				 {
+					 for (std::vector <Node*> ::iterator itt = nextnodechildrens.begin(); itt != nextnodechildrens.end(); itt++) {
 
-					if ((*itt)->GetLastNodeValue() == -1)
-					{
-						(*it)->SetClosedNode();
-						break;
-					}
-				}
-			}
-			
-			torlendochildren++;
-		}
-
-		
-			
-				actualnode->PrintMatrix();
-				actualnode = *(actualnodechildrens.begin());
-				actualnode->PrintMatrix();
-				char** m = actualnode->GetMatrix();
-				for (int i = 0; i < 3; i++)
-				{
-					for (int j = 0; j < 3; j++)
-					{
-						actualmatrix[i][j] = m[i][j];
-
-					}
-				}
-
-				if (!vege)
-				{
-					for (std::vector <Node*> ::iterator iter = actualnodechildrens.begin(); iter != actualnodechildrens.end(); iter++) {
-						std::cout << "Ezt nézd" << std::endl;
-						(*iter)->PrintMatrix();
-						//actualnode->PrintMatrix();
-						std::cout << *((*iter)->GetNodeValue()) << std::endl;
-						std::cout << *((*iter)->GetTreeSize()) << std::endl;
-						double iternodevalue = (double)*((*iter)->GetNodeValue()) / (double)*((*iter)->GetTreeSize());
-						//double actualnodevalue = actualnode->GetNodeValue() / actualnode->GetTreeSize();
-						std::cout << iternodevalue << std::endl;
-						//std::cout << actualnodevalue << std::endl;
-						if (true)
-
-						{
+						 Node * nextnextnode = (*itt);
+						 std::vector<Node*> nextnextnodechildrens = nextnextnode->GetVect();
+						 for (std::vector<Node*>::iterator ittt = nextnextnodechildrens.begin(); ittt != nextnextnodechildrens.end(); ittt++)
+						 {
 
 
-							if ((*iter)->GetClosedNode() != true)
-							{
-								actualnode = (*iter);
-								char** m = actualnode->GetMatrix();
-								for (int i = 0; i < 3; i++)
-								{
-									for (int j = 0; j < 3; j++)
-									{
-										actualmatrix[i][j] = m[i][j];
+						 }
+					 }
+				 }*/
 
-									}
-								}
-							}
-						}
+				 torlendochildren++;
+			 }
 
 
-					}
-					std::cout << "Kiiratás" << std::endl;
-					actualnode->PrintMatrix();
-					PrintMatrix(actualmatrix);
-				}
-				
+
+			 actualnode->PrintMatrix();
+			 actualnode = *(actualnodechildrens.begin());
+			 actualnode->PrintMatrix();
+			 char** m = actualnode->GetMatrix();
+			 for (int i = 0; i < 3; i++)
+			 {
+				 for (int j = 0; j < 3; j++)
+				 {
+					 actualmatrix[i][j] = m[i][j];
+
+				 }
+			 }
+
+			 if (!vege)
+			 {
+				 for (std::vector <Node*> ::iterator iter = actualnodechildrens.begin(); iter != actualnodechildrens.end(); iter++) {
+					 char ** m = (*iter)->GetMatrix();
+					 int db = 0;
+
+					 std::cout << "Ezt nézd" << std::endl;
+					 bool valami = (*iter)->GetClosedNode();
+					 std::cout << "iter" << std::endl;
+					 (*iter)->PrintMatrix();
+					 std::cout << "actualnode" << std::endl;
+					 actualnode->PrintMatrix();
+					 std::cout << "iternodevalue" << std::endl;
+
+					 std::cout << *((*iter)->GetNodeValue()) << std::endl;
+					 std::cout << "itertreesize" << std::endl;
+					 std::cout << *((*iter)->GetTreeSize()) << std::endl;
+					 std::cout << "actualnodevalue" << std::endl;
+					 std::cout << *(actualnode->GetNodeValue()) << std::endl;
+					 //std::cout << valami << std::endl;
+					 /*std::cout << *((*iter)->GetWinNode()) << std::endl;
+					 std::cout << *((*iter)->GetDrawNode()) << std::endl;
+					 std::cout << *((*iter)->GetLostNode()) << std::endl;*/
+
+					 double iternodevalue = *((*iter)->GetNodeValue());
+					 double actualnodevalue = *(actualnode->GetNodeValue());
+					 std::cout << iternodevalue << std::endl;
+					 std::cout << actualnodevalue << std::endl;
+
+					 if (elso)
+					 {
+
+						 if ((100 - abs(iternodevalue)) > (100 - abs(actualnodevalue)))
+
+						 {
+
+
+							 if (((*iter)->GetClosedNode()) != true)
+							 {
+
+								 actualnode = (*iter);
+								 char** m = actualnode->GetMatrix();
+								 for (int i = 0; i < 3; i++)
+								 {
+									 for (int j = 0; j < 3; j++)
+									 {
+										 actualmatrix[i][j] = m[i][j];
+
+									 }
+								 }
+
+							 }
+						 }
+
+
+					 }
+
+					 else
+					 {
+						 if (iternodevalue > actualnodevalue)
+
+						 {
+							 std::vector<Node*> iterchildrens = (*iter)->GetVect();
+							 bool end = false;
+							 for (std::vector <Node*> ::iterator itter = iterchildrens.begin(); itter != iterchildrens.end(); itter++)
+							 {
+								 if ((*itter)->GetClosedNode() == true)
+								 {
+									 end = true;
+								 }
+							 }
+							 if (!end)
+							 {
+
+								 if (((*iter)->GetClosedNode()) != true)
+								 {
+									 actualnode = (*iter);
+									 char** m = actualnode->GetMatrix();
+									 for (int i = 0; i < 3; i++)
+									 {
+										 for (int j = 0; j < 3; j++)
+										 {
+											 actualmatrix[i][j] = m[i][j];
+
+										 }
+									 }
+								 }
+							 }
+						 }
+					 }
+					 std::cout << "Kiiratás" << std::endl;
+					 actualnode->PrintMatrix();
+					 PrintMatrix(actualmatrix);
+					 
+				 }
+				 elso = false;
+				 index--;
+			 }
+
+		 }
+		 else
+		 {
+		 vege = true;
+		 
+		 }
 
 
 
@@ -462,22 +577,18 @@ int main()
 		
 	}
 				
-				
-			
-
-			
-
-
 	
-	/*std::clock_t start;
-	double duration;
-
-	
-	start = std::clock();
-	for (int i = 0; i < ( 7*6 * 5 * 4 * 3 * 2 * 1); i++)
-		Node * rootnode = new Node(NULL, matrix);
-	duration = (std::clock() - start)/ (double)CLOCKS_PER_SEC;
-	std::cout << "printf: " << duration << '\n';*/
-	
+	bool nyertesx = MatrixVege(actualmatrix, 'X');
+	bool nyerteso = MatrixVege(actualmatrix, 'O');
+	if (nyertesx)
+	{
+		system("cls");
+		std::cout << "Gratulálok ön Nyert!" << std::endl;
+	}
+	else if (nyerteso)
+	{
+		system("cls");
+		std::cout << "Sajnos most a gép nyert!" << std::endl;
+	}
 	return 0;
 }
