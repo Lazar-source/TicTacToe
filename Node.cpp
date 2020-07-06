@@ -1,45 +1,14 @@
 #include "Node.h"
 #include <iostream>
-void Node::SetPotentialchildren()
-{
-	
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
 
-			if (Node::matrix[i][j] == ' ')
-			{
-				potentialchildren++;
-			}
-		}
-	}
-	std::cout << "potentialchildren: " << potentialchildren << std::endl;
-}
 
-void Node::Generatechildren(Node * par)
-{
-	for (int i = 0; i < Node::potentialchildren; i++)
-	{
-	
-		Node * childrennode = new Node(par,matrix);
-		children.push_back(childrennode);
-		it = children.begin();
-		//std::cout << childrennode << " " << i << std::endl;
 
-	}
-
-}
 
 char ** Node::GetMatrix()
 {
 	return matrix;
 }
-int  Node::GetPotentialChildren()
-{
-	std::cout << "potentialchildren: " << potentialchildren << std::endl;
-	return potentialchildren;
-}
+
 void Node::SetMatrix(char ** m)
 {
 	for (int  i = 0; i < 3; i++)
@@ -81,10 +50,7 @@ void Node::SetSorGeneralas()
 {
 	sorgeneralas = true;
 }
-void Node::SetNextNode(Node * nn)
-{
-	nextnode = nn;
-}
+
 void Node::SetLastNode(bool vege)
 {
 	lastnode = vege;
@@ -118,10 +84,7 @@ int *Node::GetNodeValue()
 {
 	return &nodevalue;
 }
-int * Node::GetTreeSize()
-{
-	return &subtreesize;
-}
+
 
 std::vector<Node*> Node::GetVect()
 {
@@ -143,38 +106,16 @@ bool Node::GetClosedNode()
 {
 	return closednode;
 }
-void Node::SetWinNode()
-{
-	winnode =  1;
-}
-void Node::SetDrawNode()
-{
-	drawnode = 1;
-}
-void Node::SetLostNode()
-{
-	lostnode = 1;
-}
-int * Node::GetWinNode()
-{
-	return &winnode;
-}
-int * Node::GetDrawNode()
-{
-	return &drawnode;
-}
-int * Node::GetLostNode()
-{
-	return &lostnode;
-}
+
+
+
 Node::Node(Node * p, char** m ): parent(p)
 {
 	
-	Node::potentialchildren = 0;
+	
 	Node::db= 0 ;
 	Node::sorgeneralas = false;
 	Node:: matrix=new char*[3];
-	nextnode = nullptr;
 	lastnode = false;
 	for (int i = 0; i < 3; i++)
 	{
@@ -184,7 +125,6 @@ Node::Node(Node * p, char** m ): parent(p)
 			matrix[i][j] = m[i][j];
 		}
 	}
-	subtreesize = 0;
 	
 }
 

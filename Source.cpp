@@ -76,7 +76,7 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c, std::vector <Node*> &a)
 		{
 			node->SetLastNode(true);
 			node->SetLastNodeValue('D');
-			node->SetDrawNode();
+			
 		}
 		for (int i = 0; i < index; i++)
 		{
@@ -101,7 +101,7 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c, std::vector <Node*> &a)
 				{
 					children->SetLastNode(vege);
 					children->SetLastNodeValue('O');
-					children->SetWinNode();
+					
 					
 					
 				}
@@ -114,7 +114,7 @@ void  SorGeneralas(Node * node,std::vector<Node* > &c, std::vector <Node*> &a)
 				{
 					children->SetLastNode(vege);
 					children->SetLastNodeValue('X');
-					children->SetLostNode();
+					
 					
 					
 				}
@@ -249,15 +249,15 @@ int main()
 		}
 	}
 	Node * actualnode = root;
-	
+	bool nyertesx = MatrixVege(actualmatrix, 'X');
+	bool nyerteso = MatrixVege(actualmatrix, 'O');
 
 	system("cls");
 	bool elso{ true };
 	while (!vege)
 	{
 
-		bool nyertesx = MatrixVege(actualmatrix, 'X');
-		bool nyerteso = MatrixVege(actualmatrix, 'O');
+		
 		if (nyertesx)
 		{
 			vege = true;
@@ -299,7 +299,6 @@ int main()
 					while (Y > 3 || Y < 1)
 					{
 						std::cout << "Vízszintes: " << X << std::endl;;
-						
 						actualnode->PrintMatrix();
 						std::cout << "Kérem adjon meg egy függõleges koordinátát ahová tenni akarja a jelét!(X): " << std::endl;
 						std::cin >> input;
@@ -325,16 +324,6 @@ int main()
 				}
 				index--;
 			}
-
-			
-
-
-
-			
-
-
-
-
 			bool goodchild = false;
 
 			std::vector<Node*> actualnodechildrens = actualnode->GetVect();
@@ -351,13 +340,12 @@ int main()
 			}
 
 			bool win{ false };
-			int torlendochildren{ 0 };
-			int elemszam{ 0 };
+			
 			actualnodechildrens = actualnode->GetVect();
 			if (actualnodechildrens.size() > 0)
 			{
 				for (std::vector <Node*> ::iterator it = actualnodechildrens.begin(); it != actualnodechildrens.end(); ++it) {
-					elemszam++;
+					
 					Node* nextnode = (*it);
 					std::vector<Node*> nextnodechildrens = nextnode->GetVect();
 					int lastnodevalue = (*it)->GetLastNodeValue();
@@ -366,9 +354,9 @@ int main()
 					{
 							actualnode = (*it);
 							vege = true;
-							break;
 							actualnode->PrintMatrix();
 							nyerteso = MatrixVege(m,'O');
+							break;
 						
 					}
 					else if (lastnodevalue == 2)
@@ -379,7 +367,7 @@ int main()
 					}
 					
 
-					torlendochildren++;
+					
 				}
 
 
@@ -399,7 +387,6 @@ int main()
 				
 					for (std::vector <Node*> ::iterator iter = actualnodechildrens.begin(); iter != actualnodechildrens.end(); iter++) {
 						char ** m = (*iter)->GetMatrix();
-						int db{ 0 };
 						int iternodevalue{ *((*iter)->GetNodeValue()) };
 						int actualnodevalue{ *(actualnode->GetNodeValue()) };
 
@@ -485,8 +472,6 @@ int main()
 	}
 				
 	
-	bool nyertesx = MatrixVege(actualmatrix, 'X');
-	bool nyerteso = MatrixVege(actualmatrix, 'O');
 	if (nyertesx)
 	{
 		system("cls");
@@ -496,6 +481,11 @@ int main()
 	{
 		system("cls");
 		std::cout << "Sajnos most a gép nyert!" << std::endl;
+	}
+	else
+	{
+		system("cls");
+		std::cout << "A játék döntetlennel zárult!" << std::endl;
 	}
 	return 0;
 }
