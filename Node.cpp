@@ -97,11 +97,11 @@ void Node::SetLastNodeValue(char c)
 {
 	if (c == 'X')
 	{
-		lastnodevalue = -3;
+		lastnodevalue=-3 ;
 	}
 	else if (c == 'O')
 	{
-		lastnodevalue = 3;
+		lastnodevalue=3 ;
 	}
 	else if (c == 'D')
 	{
@@ -167,11 +167,11 @@ int * Node::GetLostNode()
 {
 	return &lostnode;
 }
-Node::Node(Node * p, char** m )
+Node::Node(Node * p, char** m ): parent(p)
 {
-	Node::parent = p;
+	
 	Node::potentialchildren = 0;
-	Node::db = 0;
+	Node::db= 0 ;
 	Node::sorgeneralas = false;
 	Node:: matrix=new char*[3];
 	nextnode = nullptr;
